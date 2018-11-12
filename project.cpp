@@ -126,12 +126,6 @@ int main()
             }
         }
     }
-    /*g.add_edge(0, 1);
-    g.add_edge(0, 2);
-    g.add_edge(0, 3);
-    g.add_edge(2, 0);
-    g.add_edge(2, 1);
-    g.add_edge(1, 3);*/
     int s = 0, d = 15;
     cout << "Following are all different paths from " << s
          << " to " << d << endl;
