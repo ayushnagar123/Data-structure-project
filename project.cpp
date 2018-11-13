@@ -82,7 +82,7 @@ int main()
     srand(time(0));
     allpaths g(16);
 
-    int maze[6][6];
+    int maze[4][4];
     for(int i=0;i<4;i++)
     {
         for(int j=0;j<4;j++)
