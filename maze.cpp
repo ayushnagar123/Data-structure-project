@@ -8,7 +8,33 @@
 
 using namespace std;
 
-class mazegame
+/*class Levels
+{
+ public:
+    int size;
+    double obstruct;
+    Levels()
+    {
+        size =0;
+        obstruct =0;
+    }*/
+    double level(int size)
+    {
+        if(size==8)
+            return(.25);
+        if(size==9)
+            return(.35);
+        if(size==10)
+            return(.45);
+        if(size==11)
+            return(.55);
+        if(size==12)
+            return(.6);
+    }
+ //};
+
+
+class mazegame//:public Levels
 {
 public:
 
@@ -85,6 +111,7 @@ public:
 
  void move(int x,int y)
  {
+     pair<int,int> K;
      char ch;
      do
      {
@@ -104,13 +131,23 @@ public:
                  if(y>0 && maze[x][y-1]!='X' && maze[x][y-1]!='#')
                    {
                      maze[x][y]='_';
+                     if(!S.empty())
+                     {  K=S.top();}
                      S.push(make_pair(x,y));
                      y-=1;
+                     if((K.first==x)&&(K.second==y))
+                     {  lives--;}
                      maze[x][y] = '@';
                      steps++;
                    }
                 else
                     cout<<"\nCan't Move up";
+
+                    if(lives==0)
+                {
+                    cout<<"\n"<<player<<" Your Steps are:- "<<steps;
+                    exit(0);
+                }
                 break;
              }
          case 'A':
@@ -118,13 +155,23 @@ public:
                  if(x>0 && maze[x-1][y]!='X'&& maze[x-1][y]!='#')
                     {
                         maze[x][y]='_';
+                        if(!S.empty())
+                        {  K=S.top();}
                         S.push(make_pair(x,y));
                         x-=1;
+                         if((K.first==x)&&(K.second==y))
+                     {  lives--;}
                         maze[x][y] = '@';
                         steps++;
                     }
                 else
                     cout<<"\nCan't Move left";
+
+                    if(lives==0)
+                {
+                    cout<<"\n"<<player<<" Your Steps are:- "<<steps;
+                    exit(0);
+                }
                 break;
              }
         case 'S':
@@ -132,13 +179,23 @@ public:
                  if(y>=0 && y+1<n && maze[x][y+1]!='X' && maze[x][y+1]!='#')
                     {
                         maze[x][y]='_';
+                        if(!S.empty())
+                        {  K=S.top();}
                         S.push(make_pair(x,y));
                         y+=1;
+                         if((K.first==x)&&(K.second==y))
+                     {  lives--;}
                         maze[x][y] = '@';
                         steps++;
                     }
                 else
                     cout<<"\nCan't Move Down";
+
+                    if(lives==0)
+                {
+                    cout<<"\n"<<player<<" Your Steps are:- "<<steps;
+                    exit(0);
+                }
                 break;
              }
 
@@ -147,13 +204,23 @@ public:
                  if(x>=0 && x+1<n && maze[x+1][y]!='X' && maze[x+1][y]!='#')
                     {
                         maze[x][y]='_';
+                        if(!S.empty())
+                        {  K=S.top();}
                         S.push(make_pair(x,y));
                         x+=1;
+                         if((K.first==x)&&(K.second==y))
+                     {  lives--;}
                         maze[x][y] = '@';
                         steps++;
                     }
                 else
                     cout<<"\nCan't Move Right";
+
+                    if(lives==0)
+                {
+                    cout<<"\n"<<player<<" Your Steps are:- "<<steps;
+                    exit(0);
+                }
                 break;
              }
         case 'U':
@@ -191,76 +258,52 @@ public:
                 cout<<"\n"<<player<<" Your Steps are:- "<<steps;
                 exit(0);
             }
+
         }
         system("clear");
         drawMaze();
 
         }while(maze[x][y]!='#');
     }
+
+   /* void scoreOfLevel()
+    {
+
+    }*/
  };
 
 
- class Levels:public mazegame
- {
- public:
-    int size=0;
-    double obstruct=0;
-
-    void level1()
-    {
-        size = 8;
-        obstruct = .25;
-    }
-
-    void level2()
-    {
-        size = 9;
-        obstruct = .35;
-    }
-
-    void level3()
-    {
-        size = 10;
-        obstruct = .45;
-    }
-
-    void level4()
-    {
-        size = 11;
-        obstruct = .55;
-    }
-
-    void level5()
-    {
-        size = 12;
-        obstruct = .60;
-    }
- };
 
 
- class leaderboard
+/*class leaderboard
  {
 public:
 
- };
+ };*/
 
 
  int main()
  {
      string name;
+     int n;
+     double c;
      cout<<"\n\t\t\t\t WELCOME \n\n\n";
      cout<<"\n\t Enter your name:- ";
      cin>>name;
+     int counter = 1;
+     //Levels l();
+     while(counter<=5)
+     {
+        n=8;
+        c = level(n);
 
-     Levels l();
-     int n = l.size;
+        mazegame a(n,name);
+        a.randomObstruction(c);
+        a.drawMaze();
+        a.move(0,0);
+        counter++;
+        n++;
+     }
 
-     mazegame a(n,name);
-
-     a.drawMaze();
-     l.level1();
-
-     a.randomObstruction(l.obstruct);
-     a.move(0,0);
      return 0;
  }
