@@ -2,8 +2,6 @@
 #include<cstdlib>
 #include<stdio.h>
 using namespace std;
-
-
 /** Declare char arr[][] , int n , lives=3 , steps=0 **/
  void drawMaze(int n , char ch[8][8])
  {
@@ -155,7 +153,7 @@ using namespace std;
          for(int j=0;j<n;j++)
             arr[i][j]=' ';
      }
-     arr = randomObstructions(arr,n);
+     //arr = randomObstructions(arr,n);
      arr[0][0]='@';
      arr[n-1][n-1]='#';
      arr[3][4] = 'X';
