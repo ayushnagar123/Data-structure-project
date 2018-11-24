@@ -3,6 +3,8 @@
 #include<stdio.h>
 using namespace std;
 
+
+/** Declare char arr[][] , int n , lives=3 , steps=0 **/
  void drawMaze(int n , char ch[8][8])
  {
      int i,j=0;
@@ -58,7 +60,8 @@ using namespace std;
          cout<<"\nDOWN....'S'";
          cout<<"\nRIGHT....'D'";
          cout<<"\nUNDO....'U'";
-         //cout<<"\n\t\t\t\t Your Lives:- "<<lives;
+         cout<<"\nQUIT....'Q'";
+         /**cout<<"\n\t\t\t\t Your Lives:- "<<lives;**/
          cout<<"\nEnter Your next Move:- ";
          cin>>ch;
          switch(ch)
@@ -70,6 +73,7 @@ using namespace std;
                      arr[x][y]='_';
                      y-=1;
                      arr[x][y] = '@';
+                     /**steps++;**/
                    }
                 else
                     cout<<"\nCan't Move up";
@@ -82,6 +86,7 @@ using namespace std;
                         arr[x][y]='_';
                         x-=1;
                         arr[x][y] = '@';
+                        /**steps++;**/
                     }
                 else
                     cout<<"\nCan't Move left";
@@ -94,6 +99,7 @@ using namespace std;
                         arr[x][y]='_';
                         y+=1;
                         arr[x][y] = '@';
+                        /**steps++;*/
                     }
                 else
                     cout<<"\nCan't Move Down";
@@ -107,11 +113,32 @@ using namespace std;
                         arr[x][y]='_';
                         x+=1;
                         arr[x][y] = '@';
+                        /**steps++;*/
                     }
                 else
                     cout<<"\nCan't Move Right";
                 break;
              }
+        case 'U':
+            {
+                /**Call Backtracking function and store the old positions in i,j**/
+                int i,j;
+                arr[x][y] = '_';
+                arr[i][j] = '@';
+                /**steps--;
+                if(lives==0)
+                {
+                    display score
+                    exit(0);
+                }
+                else
+                    lives--;**/
+                break;
+            }
+
+        case 'Q':
+            /** display score **/
+            exit(0);
         }
         system("clear");
         drawMaze(size,arr);
