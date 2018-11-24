@@ -57,13 +57,15 @@ using namespace std;
          cout<<"\nLEFT....'A'";
          cout<<"\nDOWN....'S'";
          cout<<"\nRIGHT....'D'";
+         cout<<"\nUNDO....'U'";
+         //cout<<"\n\t\t\t\t Your Lives:- "<<lives;
          cout<<"\nEnter Your next Move:- ";
          cin>>ch;
          switch(ch)
          {
          case 'W':
              {
-                 if(y>0 && arr[x][y-1]!='X')
+                 if(y>0 && arr[x][y-1]!='X' &&(y-1)!=(size-1) && x!=(size-1))
                    {
                      arr[x][y]='_';
                      y-=1;
@@ -75,7 +77,7 @@ using namespace std;
              }
          case 'A':
              {
-                 if(x>0 && arr[x-1][y]!='X')
+                 if(x>0 && arr[x-1][y]!='X'&&y!=(size-1) && (x-1)!=(size-1))
                     {
                         arr[x][y]='_';
                         x-=1;
@@ -87,7 +89,7 @@ using namespace std;
              }
         case 'S':
              {
-                 if(y>=0 &&y<size && arr[x][y+1]!='X')
+                 if(y>=0 &&y<size && arr[x][y+1]!='X' && (y+1)!=(size-1) && x!=(size-1))
                     {
                         arr[x][y]='_';
                         y+=1;
@@ -100,7 +102,7 @@ using namespace std;
 
         case 'D':
              {
-                 if(x>=0 && x<size && arr[x+1][y]!='X')
+                 if(x>=0 && x<size && arr[x+1][y]!='X' && y!=(size-1) && (x+1)!=(size-1))
                     {
                         arr[x][y]='_';
                         x+=1;
@@ -113,10 +115,8 @@ using namespace std;
         }
         system("clear");
         drawMaze(size,arr);
-        cout<<"\nPress Y to continue or N:-";
-        cin>>ch;
 
-    }while(ch=='Y');
+    }while(arr[x][y]!='#');
  }
  int main()
  {
@@ -128,7 +128,7 @@ using namespace std;
          for(int j=0;j<n;j++)
             arr[i][j]=' ';
      }
-     //arr = randomObstructions(arr,n);
+     arr = randomObstructions(arr,n);
      arr[0][0]='@';
      arr[n-1][n-1]='#';
      arr[3][4] = 'X';
