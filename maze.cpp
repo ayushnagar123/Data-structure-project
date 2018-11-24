@@ -1,17 +1,40 @@
+#include<stack>
 #include<iostream>
 #include<cstdlib>
 #include<stdio.h>
-#include<stack>
-#include<utility>
-
-
-
+#include<bits/stdc++.h>
 using namespace std;
-stack<pair<int,int>> S;
+class mazegame
+{
+public:
+    int n , lives , steps;
+    char **maze;
+    stack<pair<int,int>> S;
+    mazegame(int n)
+    {
+        this->n=n;
+        lives=3;
+        steps=0;
+        maze = new char * [n];
+        for (int i = 0; i < n; ++i )
+            maze[i] = new char [n];
 
+        for(int i=0;i<n;i++)
+        {
+          for(int j=0;j<n;j++)
+             maze[i][j]=' ';
+        }
 
-/** Declare char arr[][] , int n , lives=3 , steps=0 **/
- void drawMaze(int n , char ch[8][8])
+        maze[0][0]='@';
+        maze[n-1][n-1]='#';
+        /** randomObstruction function to be called **/
+        maze[3][4] = 'X';
+        maze[1][7] = 'X';
+        maze[2][4] = 'X';
+        maze[6][6] = 'X';
+        maze[7][5] = 'X';
+    }
+ void drawMaze()
  {
      int i,j=0;
      cout<<"\n\n\n\n\n";
@@ -29,8 +52,8 @@ stack<pair<int,int>> S;
      {
         for(i=0;i<n;i++)
         {
-            if(ch[i][j]!=' ')
-                printf("\t| _%c_ |",ch[i][j]);
+            if(maze[i][j]!=' ')
+                printf("\t| _%c_ |",maze[i][j]);
             else
                 cout<<"\t| ___ |";
         }
@@ -56,7 +79,7 @@ stack<pair<int,int>> S;
     return maze;
  }*/
 
- void move(char arr[8][8] ,int size, int x,int y)
+ void move(int x,int y)
  {
      char ch;
      do
@@ -68,19 +91,19 @@ stack<pair<int,int>> S;
          cout<<"\nUNDO....'U'";
          cout<<"\nQUIT....'Q'";
          /**cout<<"\n\t\t\t\t Your Lives:- "<<lives;**/
-         cout<<"\nEnter Your next Move:- ";
+         cout<<"\nEnter Your Move:- ";
          cin>>ch;
          switch(ch)
          {
          case 'W':
              {
-                 if(y>0 && arr[x][y-1]!='X' &&(y-1)!=(size-1) && x!=(size-1))
+                 if(y>0 && maze[x][y-1]!='X' && maze[x][y-1]!='#')
                    {
-                     arr[x][y]='_';
+                     maze[x][y]='_';
                      S.push(make_pair(x,y));
                      y-=1;
-                     arr[x][y] = '@';
-                     /**steps++;**/
+                     maze[x][y] = '@';
+                     steps++;
                    }
                 else
                     cout<<"\nCan't Move up";
@@ -88,13 +111,13 @@ stack<pair<int,int>> S;
              }
          case 'A':
              {
-                 if(x>0 && arr[x-1][y]!='X'&&y!=(size-1) && (x-1)!=(size-1))
+                 if(x>0 && maze[x-1][y]!='X'&& maze[x-1][y]!='#')
                     {
-                        arr[x][y]='_';
+                        maze[x][y]='_';
                         S.push(make_pair(x,y));
                         x-=1;
-                        arr[x][y] = '@';
-                        /**steps++;**/
+                        maze[x][y] = '@';
+                        steps++;
                     }
                 else
                     cout<<"\nCan't Move left";
@@ -102,13 +125,13 @@ stack<pair<int,int>> S;
              }
         case 'S':
              {
-                 if(y>=0 &&y<size && arr[x][y+1]!='X' && (y+1)!=(size-1) && x!=(size-1))
+                 if(y>=0 && y+1<n && maze[x][y+1]!='X' && maze[x][y+1]!='#')
                     {
-                        arr[x][y]='_';
+                        maze[x][y]='_';
                         S.push(make_pair(x,y));
                         y+=1;
-                        arr[x][y] = '@';
-                        /**steps++;*/
+                        maze[x][y] = '@';
+                        steps++;
                     }
                 else
                     cout<<"\nCan't Move Down";
@@ -117,13 +140,13 @@ stack<pair<int,int>> S;
 
         case 'D':
              {
-                 if(x>=0 && x<size && arr[x+1][y]!='X' && y!=(size-1) && (x+1)!=(size-1))
+                 if(x>=0 && x+1<n && maze[x+1][y]!='X' && maze[x+1][y]!='#')
                     {
-                        arr[x][y]='_';
+                        maze[x][y]='_';
                         S.push(make_pair(x,y));
                         x+=1;
-                        arr[x][y] = '@';
-                        /**steps++;*/
+                        maze[x][y] = '@';
+                        steps++;
                     }
                 else
                     cout<<"\nCan't Move Right";
@@ -133,10 +156,10 @@ stack<pair<int,int>> S;
             {
                 /**Call Backtracking function and store the old positions in i,j**/
                 int i,j;
-                    if(S.empty()==true)
+                if(S.empty()==true)
                     {   cout<<"UNDO NOT POSSIBLE";
                         break;
-                        
+
                     }
                     else{
 
@@ -145,51 +168,42 @@ stack<pair<int,int>> S;
                     i=P.first;
                     j=P.second;
                     S.pop();
-                
-                arr[x][y] = '_';
-                arr[i][j] = '@';
+
+                maze[x][y] = '_';
+                maze[i][j] = '@';
                 x=i;
                 y=j;
-                                    }                /**steps--;
+                steps--;
+                }
                 if(lives==0)
                 {
-                    display score
+                    /**display score**/
+                    cout<<"steps="<<steps;
                     exit(0);
                 }
                 else
-                    lives--;**/
+                    lives--;
                 break;
             }
 
         case 'Q':
-            cout<<"SCORE DISPLAY";
-            /** display score **/
-            exit(0);
+            {/** display score **/
+                cout<<steps;
+                exit(0);
+            }
         }
         system("clear");
-        drawMaze(size,arr);
+        drawMaze();
 
-    }while(arr[x][y]!='#');
- }
+        }while(maze[x][y]!='#');
+    }
+ };
+
  int main()
  {
      int n=8;
-     char arr[8][8];
-
-     for(int i=0;i<n;i++)
-     {
-         for(int j=0;j<n;j++)
-            arr[i][j]=' ';
-     }
-     //arr = randomObstructions(arr,n);
-     arr[0][0]='@';
-     arr[n-1][n-1]='#';
-     arr[3][4] = 'X';
-     arr[1][7] = 'X';
-     arr[2][4] = 'X';
-     arr[6][6] = 'X';
-     arr[7][5] = 'X';
-     drawMaze(n,arr);
-     move(arr,n,0,0);
+     mazegame a(n);
+     a.drawMaze();
+     a.move(0,0);
      return 0;
  }
