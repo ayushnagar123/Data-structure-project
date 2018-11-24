@@ -3,6 +3,7 @@
 #include<cstdlib>
 #include<stdio.h>
 #include<bits/stdc++.h>
+#include<string>
 using namespace std;
 class mazegame
 {
@@ -26,11 +27,13 @@ public:
 
     int n , lives , steps;
     char **maze;
+    string player;
     stack<pair<int,int>> S;
 
-    mazegame(int n)
+    mazegame(int n , string name)
     {
         this->n=n;
+        player = name;
         lives=3;
         steps=0;
         maze = new char * [n];
@@ -46,12 +49,8 @@ public:
         maze[0][0]='@';
         maze[n-1][n-1]='#';
         randomObstruction();
-        /**maze[3][4] = 'X';
-        maze[1][7] = 'X';
-        maze[2][4] = 'X';
-        maze[6][6] = 'X';
-        maze[7][5] = 'X';**/
     }
+
  void drawMaze()
  {
      int i,j=0;
@@ -176,7 +175,7 @@ public:
                     }
                 if(lives==0)
                 {
-                    cout<<"\nYour Steps:- "<<steps;
+                    cout<<"\n"<<player<<" Your Steps are:- "<<steps;
                     exit(0);
                 }
                 else
@@ -186,7 +185,7 @@ public:
 
         case 'Q':
             {
-                cout<<"\nYour Steps:- "<<steps;
+                cout<<"\n"<<player<<" Your Steps are:- "<<steps;
                 exit(0);
             }
         }
@@ -199,8 +198,12 @@ public:
 
  int main()
  {
+     string name;
+     cout<<"\n\t\t\t\t WELCOME \n\n\n";
+     cout<<"\n\t Enter your name:- ";
+     cin>>name;
      int n=8;
-     mazegame a(n);
+     mazegame a(n,name);
      a.drawMaze();
      a.move(0,0);
      return 0;
