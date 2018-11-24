@@ -4,13 +4,23 @@
 #include<stdio.h>
 #include<bits/stdc++.h>
 #include<string>
+#include<ctime>
+
 using namespace std;
+
 class mazegame
 {
-private:
-    void randomObstruction()
+public:
+
+    int n , lives , steps;
+    char **maze;
+    string player;
+    stack<pair<int,int>> S;
+
+    void randomObstruction(double percent)
     {
-        int c=(.25*n*n);
+        srand(time(NULL));
+        int c=(percent*n*n);
         while(c>0)
         {
             int i=rand()%8;
@@ -22,13 +32,6 @@ private:
             }
         }
     }
-
-public:
-
-    int n , lives , steps;
-    char **maze;
-    string player;
-    stack<pair<int,int>> S;
 
     mazegame(int n , string name)
     {
@@ -48,7 +51,7 @@ public:
 
         maze[0][0]='@';
         maze[n-1][n-1]='#';
-        randomObstruction();
+        /**randomObstruction();**/
     }
 
  void drawMaze()
@@ -196,15 +199,68 @@ public:
     }
  };
 
+
+ class Levels:public mazegame
+ {
+ public:
+    int size=0;
+    double obstruct=0;
+
+    void level1()
+    {
+        size = 8;
+        obstruct = .25;
+    }
+
+    void level2()
+    {
+        size = 9;
+        obstruct = .35;
+    }
+
+    void level3()
+    {
+        size = 10;
+        obstruct = .45;
+    }
+
+    void level4()
+    {
+        size = 11;
+        obstruct = .55;
+    }
+
+    void level5()
+    {
+        size = 12;
+        obstruct = .60;
+    }
+ };
+
+
+ class leaderboard
+ {
+public:
+
+ };
+
+
  int main()
  {
      string name;
      cout<<"\n\t\t\t\t WELCOME \n\n\n";
      cout<<"\n\t Enter your name:- ";
      cin>>name;
-     int n=8;
+
+     Levels l();
+     int n = l.size;
+
      mazegame a(n,name);
+
      a.drawMaze();
+     l.level1();
+
+     a.randomObstruction(l.obstruct);
      a.move(0,0);
      return 0;
  }
