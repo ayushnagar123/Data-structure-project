@@ -6,10 +6,28 @@
 using namespace std;
 class mazegame
 {
+private:
+    void randomObstruction()
+    {
+        int c=(.25*n*n);
+        while(c>0)
+        {
+            int i=rand()%8;
+            int j=rand()%8;
+            if(maze[i][j]!='X' && maze[i][j]!='#' && (i!=0 || j!=0))
+            {
+                maze[i][j]='X';
+                c--;
+            }
+        }
+    }
+
 public:
+
     int n , lives , steps;
     char **maze;
     stack<pair<int,int>> S;
+
     mazegame(int n)
     {
         this->n=n;
@@ -27,12 +45,12 @@ public:
 
         maze[0][0]='@';
         maze[n-1][n-1]='#';
-        /** randomObstruction function to be called **/
-        maze[3][4] = 'X';
+        randomObstruction();
+        /**maze[3][4] = 'X';
         maze[1][7] = 'X';
         maze[2][4] = 'X';
         maze[6][6] = 'X';
-        maze[7][5] = 'X';
+        maze[7][5] = 'X';**/
     }
  void drawMaze()
  {
@@ -63,22 +81,6 @@ public:
     cout<<"\n\n\n\n\n";
  }
 
- /*char* randomObstructions(char maze[8][8],int n)
- {
-    int c=(.25*n*n);
-    while(c<8)
-    {
-        int i=rand()%8;
-        int j=rand()%8;
-        if(maze[i][j]!='X' && (i!=0&&j!=0)||(i!=8 && j!=8))
-          {
-            maze[i][j]='X';
-            c++;
-        }
-    }
-    return maze;
- }*/
-
  void move(int x,int y)
  {
      char ch;
@@ -90,7 +92,7 @@ public:
          cout<<"\nRIGHT....'D'";
          cout<<"\nUNDO....'U'";
          cout<<"\nQUIT....'Q'";
-         /**cout<<"\n\t\t\t\t Your Lives:- "<<lives;**/
+         cout<<"\n\t\t\t\t Your Lives:- "<<lives;
          cout<<"\nEnter Your Move:- ";
          cin>>ch;
          switch(ch)
@@ -154,31 +156,27 @@ public:
              }
         case 'U':
             {
-                /**Call Backtracking function and store the old positions in i,j**/
                 int i,j;
                 if(S.empty()==true)
-                    {   cout<<"UNDO NOT POSSIBLE";
+                    {   cout<<"\nUNDO NOT POSSIBLE";
                         break;
 
                     }
-                    else{
-
-
-                    pair<int,int> P=S.top();
-                    i=P.first;
-                    j=P.second;
-                    S.pop();
-
-                maze[x][y] = '_';
-                maze[i][j] = '@';
-                x=i;
-                y=j;
-                steps--;
-                }
+                    else
+                    {
+                        pair<int,int> P=S.top();
+                        i=P.first;
+                        j=P.second;
+                        S.pop();
+                        maze[x][y] = '_';
+                        maze[i][j] = '@';
+                        x=i;
+                        y=j;
+                        steps--;
+                    }
                 if(lives==0)
                 {
-                    /**display score**/
-                    cout<<"steps="<<steps;
+                    cout<<"\nYour Steps:- "<<steps;
                     exit(0);
                 }
                 else
@@ -187,8 +185,8 @@ public:
             }
 
         case 'Q':
-            {/** display score **/
-                cout<<steps;
+            {
+                cout<<"\nYour Steps:- "<<steps;
                 exit(0);
             }
         }
