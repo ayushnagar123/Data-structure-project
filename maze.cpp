@@ -1,7 +1,15 @@
 #include<iostream>
 #include<cstdlib>
 #include<stdio.h>
+#include<stack>
+#include<utility>
+
+
+
 using namespace std;
+stack<pair<int,int>> S;
+
+
 /** Declare char arr[][] , int n , lives=3 , steps=0 **/
  void drawMaze(int n , char ch[8][8])
  {
@@ -69,6 +77,7 @@ using namespace std;
                  if(y>0 && arr[x][y-1]!='X' &&(y-1)!=(size-1) && x!=(size-1))
                    {
                      arr[x][y]='_';
+                     S.push(make_pair(x,y));
                      y-=1;
                      arr[x][y] = '@';
                      /**steps++;**/
@@ -82,6 +91,7 @@ using namespace std;
                  if(x>0 && arr[x-1][y]!='X'&&y!=(size-1) && (x-1)!=(size-1))
                     {
                         arr[x][y]='_';
+                        S.push(make_pair(x,y));
                         x-=1;
                         arr[x][y] = '@';
                         /**steps++;**/
@@ -95,6 +105,7 @@ using namespace std;
                  if(y>=0 &&y<size && arr[x][y+1]!='X' && (y+1)!=(size-1) && x!=(size-1))
                     {
                         arr[x][y]='_';
+                        S.push(make_pair(x,y));
                         y+=1;
                         arr[x][y] = '@';
                         /**steps++;*/
@@ -109,6 +120,7 @@ using namespace std;
                  if(x>=0 && x<size && arr[x+1][y]!='X' && y!=(size-1) && (x+1)!=(size-1))
                     {
                         arr[x][y]='_';
+                        S.push(make_pair(x,y));
                         x+=1;
                         arr[x][y] = '@';
                         /**steps++;*/
@@ -121,9 +133,24 @@ using namespace std;
             {
                 /**Call Backtracking function and store the old positions in i,j**/
                 int i,j;
+                    if(S.empty()==true)
+                    {   cout<<"UNDO NOT POSSIBLE";
+                        break;
+                        
+                    }
+                    else{
+
+
+                    pair<int,int> P=S.top();
+                    i=P.first;
+                    j=P.second;
+                    S.pop();
+                
                 arr[x][y] = '_';
                 arr[i][j] = '@';
-                /**steps--;
+                x=i;
+                y=j;
+                                    }                /**steps--;
                 if(lives==0)
                 {
                     display score
@@ -135,6 +162,7 @@ using namespace std;
             }
 
         case 'Q':
+            cout<<"SCORE DISPLAY";
             /** display score **/
             exit(0);
         }
