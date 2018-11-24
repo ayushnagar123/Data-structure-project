@@ -8,32 +8,7 @@
 
 using namespace std;
 
-/*class Levels
-{
- public:
-    int size;
-    double obstruct;
-    Levels()
-    {
-        size =0;
-        obstruct =0;
-    }*/
-    double level(int size)
-    {
-        if(size==8)
-            return(.25);
-        if(size==9)
-            return(.35);
-        if(size==10)
-            return(.45);
-        if(size==11)
-            return(.55);
-        if(size==12)
-            return(.6);
-    }
- //};
-
-
+int score=0;
 class mazegame//:public Levels
 {
 public:
@@ -77,7 +52,6 @@ public:
 
         maze[0][0]='@';
         maze[n-1][n-1]='#';
-        /**randomObstruction();**/
     }
 
  void drawMaze()
@@ -128,7 +102,7 @@ public:
          {
          case 'W':
              {
-                 if(y>0 && maze[x][y-1]!='X' && maze[x][y-1]!='#')
+                 if(y>0 && maze[x][y-1]!='X'&& maze[x][y-1]!='#')
                    {
                      maze[x][y]='_';
                      if(!S.empty())
@@ -140,10 +114,16 @@ public:
                      maze[x][y] = '@';
                      steps++;
                    }
+                else if(maze[x][y-1]=='#')
+                    {
+                        cout<<"\n\t\t\tHURRAY!! Level Cleared !!";
+                        y-=1;
+                        break;
+                    }
                 else
                     cout<<"\nCan't Move up";
 
-                    if(lives==0)
+                if(lives==0)
                 {
                     cout<<"\n"<<player<<" Your Steps are:- "<<steps;
                     exit(0);
@@ -164,10 +144,16 @@ public:
                         maze[x][y] = '@';
                         steps++;
                     }
+                else if(maze[x-1][y]=='#')
+                   {
+                       cout<<"\n\t\t\tHURRAY!! Level Cleared !!";
+                       x-=1;
+                       break;
+                   }
                 else
                     cout<<"\nCan't Move left";
 
-                    if(lives==0)
+                if(lives==0)
                 {
                     cout<<"\n"<<player<<" Your Steps are:- "<<steps;
                     exit(0);
@@ -188,10 +174,16 @@ public:
                         maze[x][y] = '@';
                         steps++;
                     }
+                else if(maze[x][y+1]=='#')
+                    {
+                        cout<<"\n\t\t\tHURRAY!! Level Cleared !!";
+                        y+=1;
+                        break;
+                    }
                 else
                     cout<<"\nCan't Move Down";
 
-                    if(lives==0)
+                if(lives==0)
                 {
                     cout<<"\n"<<player<<" Your Steps are:- "<<steps;
                     exit(0);
@@ -212,6 +204,12 @@ public:
                      {  lives--;}
                         maze[x][y] = '@';
                         steps++;
+                    }
+                else if(maze[x+1][y]=='#')
+                    {
+                        cout<<"\n\t\t\tHURRAY!! Level Cleared !!";
+                        x+=1;
+                        break;
                     }
                 else
                     cout<<"\nCan't Move Right";
@@ -260,18 +258,61 @@ public:
             }
 
         }
-        system("clear");
+        //system("clear");
         drawMaze();
 
         }while(maze[x][y]!='#');
     }
 
-   /* void scoreOfLevel()
+   void scoreBoard(int shortest , int longest)
     {
-
-    }*/
+            int avg = (longest+shortest)/2;
+            int count=0;
+            if(steps>avg)
+               {
+                 score += 40;
+               }
+            else if(steps == avg)
+            {
+                score+=50;
+            }
+            else
+            {
+                if(steps==shortest)
+                    score+=100;
+                else
+                {
+                    count = steps-shortest;
+                    score+= (100-count*10);
+                }
+            }
+    }
  };
 
+/*class Levels
+{
+ public:
+    int size;
+    double obstruct;
+    Levels()
+    {
+        size =0;
+        obstruct =0;
+    }*/
+    double level(int size)
+    {
+        if(size==8)
+            return(.25);
+        if(size==9)
+            return(.35);
+        if(size==10)
+            return(.45);
+        if(size==11)
+            return(.55);
+        if(size==12)
+            return(.6);
+    }
+ //};
 
 
 
@@ -285,7 +326,7 @@ public:
  int main()
  {
      string name;
-     int n;
+     int n=8;
      double c;
      cout<<"\n\t\t\t\t WELCOME \n\n\n";
      cout<<"\n\t Enter your name:- ";
@@ -294,16 +335,17 @@ public:
      //Levels l();
      while(counter<=5)
      {
-        n=8;
+        cout<<"\n\n\t\t LEVEL "<<counter<<"\n\n";
         c = level(n);
-
         mazegame a(n,name);
         a.randomObstruction(c);
         a.drawMaze();
         a.move(0,0);
+        a.scoreBoard(20,45); /** parameters to be decided according to the graph for every level **/
         counter++;
         n++;
      }
 
+     cout<<"\nYour Score is:- ";
      return 0;
  }
