@@ -5,27 +5,119 @@
 #include<bits/stdc++.h>
 #include<string>
 #include<ctime>
-
 using namespace std;
-
 int score=0;
-class mazegame//:public Levels
+char **maze;
+static int lives= 3;
+
+
+class Graph
+{
+    public:
+        int nodes;
+        vector<int>*adj;
+        int sp;
+        int lp;
+
+    Graph(int n)
+    {
+        sp=0;
+        this->nodes=n;
+        adj=new vector<int>[n*n];
+    }
+    void redef_graph(int n1)
+    {
+        sp=0;
+        nodes=n1;
+            adj=new vector<int>[nodes*nodes];
+
+    }
+    void init()
+    {
+        adj=new vector<int>[nodes*nodes];
+    }
+
+    void checkEdge()
+    {
+        for(int i=0;i<nodes;i++)
+        {
+            for(int j=0;j<nodes;j++)
+            {
+                edge(i,j);
+            }
+        }
+    }
+
+    void add_edge(int org,int dest)
+    {
+        adj[org].push_back(dest);
+    }
+
+    void edge(int i,int j)
+    {
+        if(maze[i][j]!='X')
+        {
+            if(i>0 && maze[i-1][j]!='X')
+            {
+                add_edge((i*nodes)+j,(i-1)*nodes+j);
+            }
+            if(i<nodes-1 && maze[i+1][j]!='X')
+            {
+                add_edge((i*nodes)+j,(i+1)*nodes+j);
+            }
+            if(j>0 && maze[i][j-1]!='X')
+            {
+                add_edge((i*nodes)+j,(i*nodes)+(j-1));
+            }
+            if(j<nodes-1 && maze[i][j+1]!='X')
+            {
+                add_edge((i*nodes)+j,(i*nodes)+(j+1));
+            }
+        }
+    }
+
+    int minEdgeBFS(int u, int v)
+    {
+        vector<bool> visited(nodes*nodes, false);
+        vector<int> distance(nodes*nodes, 0);
+        queue <int> Q;
+        distance[u] = 0;
+        Q.push(u);
+        visited[u] = true;
+        while (!Q.empty())
+        {
+            int x = Q.front();
+            Q.pop();
+            for (int i=0; i<adj[x].size(); i++)
+            {
+                if (visited[adj[x][i]])
+                    continue;
+                distance[adj[x][i]] = distance[x] + 1;
+                Q.push(adj[x][i]);
+                visited[adj[x][i]] = 1;
+            }
+        }
+        return distance[v];
+    }
+};
+
+
+class mazegame
 {
 public:
-
-    int n , lives , steps;
-    char **maze;
-    string player;
+   string player;
     stack<pair<int,int>> S;
+    int n , steps;
+
 
     void randomObstruction(double percent)
     {
-        srand(time(NULL));
+
         int c=(percent*n*n);
         while(c>0)
         {
-            int i=rand()%8;
-            int j=rand()%8;
+            int i=rand()%n;
+            int j=rand()%n;
             if(maze[i][j]!='X' && maze[i][j]!='#' && (i!=0 || j!=0))
             {
                 maze[i][j]='X';
@@ -38,7 +130,6 @@ public:
     {
         this->n=n;
         player = name;
-        lives=3;
         steps=0;
         maze = new char * [n];
         for (int i = 0; i < n; ++i )
@@ -53,7 +144,23 @@ public:
         maze[0][0]='@';
         maze[n-1][n-1]='#';
     }
+    void redefine(int n1)
+    {
+        n=n1;
+        steps=0;
+        maze = new char * [n];
+        for (int i = 0; i < n; ++i )
+            maze[i] = new char [n];
 
+        for(int i=0;i<n;i++)
+        {
+          for(int j=0;j<n;j++)
+             maze[i][j]=' ';
+        }
+
+        maze[0][0]='@';
+        maze[n-1][n-1]='#';
+    }
  void drawMaze()
  {
      int i,j=0;
@@ -82,7 +189,6 @@ public:
      }
     cout<<"\n\n\n\n\n";
  }
-
  void move(int x,int y)
  {
      pair<int,int> K;
@@ -263,64 +369,65 @@ public:
 
         }while(maze[x][y]!='#');
     }
-
-   void scoreBoard(int shortest , int longest)
+   void scoreBoard(int shortest , double percent)
     {
+            int longest = (n*n)-(percent*n*n);
             int avg = (longest+shortest)/2;
             int count=0;
-            if(steps>avg)
+            if((steps+1)>avg)
                {
                  score += 40;
                }
-            else if(steps == avg)
+            else if((steps+1) == avg)
             {
                 score+=50;
             }
-            else
+            else if((steps+1)<avg)
             {
-                if(steps==shortest)
+                if((steps+1)==shortest)
                     score+=100;
                 else
                 {
-                    count = steps-shortest;
-                    score+= (100-count*10);
+                    count = (steps+1)-shortest;
+                    if(count==1)
+                        score+=95;
+                    else if(count==2)
+                        score+=90;
+                    else if(count==3)
+                        score+=85;
+                    else if(count==4)
+                        score+=80;
+                     else if(count==5)
+                        score+=75;
+                     else if(count==6)
+                        score+=70;
+                     else if(count==7)
+                        score+=65;
+                     else if(count==8)
+                        score+=60;
+                     else if(count==9)
+                        score+=55;
+                    else
+                        score+=50;
+
                 }
             }
     }
  };
 
-/*class Levels
-{
- public:
-    int size;
-    double obstruct;
-    Levels()
-    {
-        size =0;
-        obstruct =0;
-    }*/
     double level(int size)
     {
         if(size==8)
-            return(.25);
+            return(.15);
         if(size==9)
-            return(.35);
+            return(.20);
         if(size==10)
-            return(.45);
+            return(.25);
         if(size==11)
-            return(.55);
+            return(.3);
         if(size==12)
-            return(.6);
+            return(.35);
     }
- //};
-
-
-
-/*class leaderboard
- {
-public:
-
- };*/
 
 
  int main()
@@ -328,24 +435,51 @@ public:
      string name;
      int n=8;
      double c;
+     srand(time(NULL));
      cout<<"\n\t\t\t\t WELCOME \n\n\n";
      cout<<"\n\t Enter your name:- ";
      cin>>name;
+
      int counter = 1;
-     //Levels l();
+     int sp=0;
+     mazegame a(n,name);
+     Graph g(n) ;
      while(counter<=5)
      {
+         int sp=0;
+        char ch;
         cout<<"\n\n\t\t LEVEL "<<counter<<"\n\n";
         c = level(n);
-        mazegame a(n,name);
-        a.randomObstruction(c);
-        a.drawMaze();
+
+
+        while(sp==0)
+        {
+
+             a.redefine(n);
+            g.redef_graph(n);
+
+            a.randomObstruction(c);
+
+          g.init();
+
+        g.checkEdge();
+        sp=g.minEdgeBFS(0,(n*n)-1);
+         if(sp!=0)
+         {
+
+            a.drawMaze();
+
+         }
+        }
         a.move(0,0);
-        a.scoreBoard(20,45); /** parameters to be decided according to the graph for every level **/
+        a.scoreBoard(sp,c);
+        cout<<"\nYour total Steps were:- "<<(a.steps+1);
+        cout<<"\nYour Score:- "<<score;
+        cout<<"\nMin steps were:- "<<sp;
         counter++;
         n++;
-     }
+    }
+    cout<<"\nYou have won !!";
 
-     cout<<"\nYour Score is:- ";
-     return 0;
+    return 0;
  }
