@@ -232,6 +232,7 @@ public:
                 if(lives==0)
                 {
                     cout<<"\n"<<player<<" Your Steps are:- "<<steps;
+		    cout<<"\n"<<player<<" Your score is:- "<<score;
                     exit(0);
                 }
                 break;
@@ -262,6 +263,7 @@ public:
                 if(lives==0)
                 {
                     cout<<"\n"<<player<<" Your Steps are:- "<<steps;
+		    cout<<"\n"<<player<<" Your score is:- "<<score;
                     exit(0);
                 }
                 break;
@@ -291,7 +293,8 @@ public:
 
                 if(lives==0)
                 {
-                    cout<<"\n"<<player<<" Your Steps are:- "<<steps;
+                    cout<<"\n"<<player<<" Your Steps are:- "<<steps+1;
+		    cout<<"\n"<<player<<" Your score is:- "<<score;
                     exit(0);
                 }
                 break;
@@ -323,6 +326,7 @@ public:
                     if(lives==0)
                 {
                     cout<<"\n"<<player<<" Your Steps are:- "<<steps;
+		    cout<<"\n"<<player<<" Your score is:- "<<score;
                     exit(0);
                 }
                 break;
@@ -349,7 +353,8 @@ public:
                     }
                 if(lives==0)
                 {
-                    cout<<"\n"<<player<<" Your Steps are:- "<<steps;
+                    cout<<"\n"<<player<<" Your Steps are:- "<<steps+1;
+		    cout<<"\n"<<player<<" Your score is:- "<<score;
                     exit(0);
                 }
                 else
@@ -359,7 +364,8 @@ public:
 
         case 'Q':
             {
-                cout<<"\n"<<player<<" Your Steps are:- "<<steps;
+                cout<<"\n"<<player<<" Your steps are:- "<<steps+1;
+		cout<<"\n"<<player<<" Your score is:- "<<score;
                 exit(0);
             }
 

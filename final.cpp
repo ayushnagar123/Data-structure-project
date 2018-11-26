@@ -2,6 +2,7 @@
 #include<iostream>
 #include<cstdlib>
 #include<stdio.h>
+#include<cstdlib>
 #include<bits/stdc++.h>
 #include<string>
 #include<ctime>
@@ -12,10 +13,7 @@ int counter = 1;
 char **maze;
 static int lives= 3;
 int player_count=0;
-
 vector<class player> leader;
-
-
 class Graph
 {
     public:
@@ -105,18 +103,15 @@ class Graph
         return distance[v];
     }
 };
-
-
 class mazegame
 {
 public:
    string player;
     stack<pair<int,int> > S;
     int n , steps;
-
-
     void randomObstruction(double percent)
     {
+
         int c=(percent*n*n);
         while(c>0)
         {
@@ -129,7 +124,6 @@ public:
             }
         }
     }
-
     mazegame(int n , string name)
     {
         this->n=n;
@@ -161,7 +155,6 @@ public:
           for(int j=0;j<n;j++)
              maze[i][j]=' ';
         }
-
         maze[0][0]='@';
         maze[n-1][n-1]='#';
     }
@@ -196,10 +189,8 @@ public:
      }
     cout<<"\n\n\n\n\n";
  }
-
  int move(int x,int y)
  {
-
      pair<int,int> K;
      char ch;
      int termin=0;
@@ -213,9 +204,9 @@ public:
          cout<<"\nQUIT....'Q'";
          cout<<"\n\t\t\t\t Your Lives:- "<<lives;
          cout<<"\nEnter Your Move:- ";
-
+         //system("stty raw");
          ch=getchar();
-
+         //system("stty cooked");
          switch(ch)
          {
          case 'W':
@@ -240,7 +231,6 @@ public:
                     }
                 else
                     cout<<"\nCan't Move up";
-
                 if(lives==0)
                 {
                     cout<<"\n"<<player<<" Your Steps are:- "<<steps;
@@ -270,7 +260,6 @@ public:
                    }
                 else
                     cout<<"\nCan't Move left";
-
                 if(lives==0)
                 {
                     cout<<"\n"<<player<<" Your Steps are:- "<<steps;
@@ -362,20 +351,18 @@ public:
                 if(lives==0)
                 {
                     cout<<"\n"<<player<<" Your Steps are:- "<<steps;
-                    exit(0);
+                    int count_player=0;
                 }
                 else
                     lives--;
                 break;
             }
-
         case 'Q':
             {
                 cout<<"\n"<<player<<" Your Steps are:- "<<steps;
                 termin=1;
-                break;
+                int count_player=0;
             }
-
         }
         //system("clear");
         if(termin==0)
@@ -437,97 +424,89 @@ public:
                 }
             }
     }
-};
-
+ };
 class Levels
 {
-public:
-    double level(int size)
-    {
-        if(size==8)
-            return(.15);
-        if(size==9)
-            return(.2);
-        if(size==10)
-            return(.3);
-        if(size==11)
-            return(.35);
-        if(size==12)
-            return(.3);
-    }
+    public:
+        double level(int size)
+        {
+            if(size==8)
+                return(.15);
+            if(size==9)
+                return(.2);
+            if(size==10)
+                return(.3);
+            if(size==11)
+                return(.35);
+            if(size==12)
+                return(.3);
+        }
 };
-
-class player{
+class player
+{
     public:
     string pl_name;
     int pl_score;
 };
-
 bool compare(player i1,player i2)
 {
     return(i1.pl_score>i2.pl_score);
 }
-
 void add_player(string name,int sco,int count_player)
 {
-             player p1;
-             p1.pl_name=name;
-             p1.pl_score=sco;
-             leader.push_back(p1);
-             count_player++;
-
+    player p1;
+    p1.pl_name=name;
+    p1.pl_score=sco;
+    leader.push_back(p1);
+    count_player++;
 }
-      void update_player(string name,int sco,int count_player)
-      {
-          for(int i=0;i<count_player;i++)
-          {
-              if(leader[i].pl_name==name)
-              {
-                  leader[i].pl_name=sco;
-                  count_player++;
-              }
-          }
-      }
-
+void update_player(string name,int sco,int count_player)
+{
+    for(int i=0;i<count_player;i++)
+    {
+        if(leader[i].pl_name==name)
+        {
+            leader[i].pl_name=sco;
+            count_player++;
+        }
+    }
+}
 int find_pl(string name,int count_player)
 {
     int temp=0;
     for(int i=0;i<count_player;i++)
     {
         if(leader[count_player].pl_name==name)
-              temp=1;
-
+        {
+            temp=1;
+        }
     }
     return temp;
 }
-
 void create_leader()
 {
-      sort(leader.begin(),leader.end(),compare);
-      ofstream m4("n1.txt");
-      for(int i=0;i<player_count;i++)
-      {
-          m4<<leader[i].pl_name<<" "<<leader[i].pl_score<<"\n";
-      }
-      m4.close();
+    sort(leader.begin(),leader.end(),compare);
+    ofstream m4("n1.txt");
+    for(int i=0;i<player_count;i++)
+    {
+        m4<<leader[i].pl_name<<" "<<leader[i].pl_score<<"\n";
+    }
+    m4.close();
 }
-
 void get_player_count()
 {
     ifstream m1("n1.txt");
     if(!m1.fail())
     {
-        string n;
-        while(!m1.eof())
-        {
-            getline(m1,n);
-            player_count++;
-        }
+    string n;
+     while(!m1.eof())
+     {
+         getline(m1,n);
+         player_count++;
+     }
     }
     m1.close();
 }
-
-
 int find_player(string n1,int score_of_pl,int count_player)
 {
     string nam;
@@ -535,27 +514,25 @@ int find_player(string n1,int score_of_pl,int count_player)
     ifstream m2("n1.txt");
     if(!m2.fail())
     {
-        while(!m2.eof())
+    while(!m2.eof())
+    {
+        m2>>nam>>score_p;
+        if(nam!="")
         {
-            m2>>nam>>score_p;
-            if(nam!="")
-            {
-                add_player(nam,score_p,count_player);
-            }
+        add_player(nam,score_p,count_player);
         }
-        if(find_pl(n1,count_player)!=1)
-        {
-            add_player(n1,score_of_pl,count_player);
-        }
-        else if(find_pl(n1,count_player))
-        {
-            update_player(n1,score_of_pl,count_player);
-        }
-        m2.close();
-
+    }
+    if(find_pl(n1,count_player)!=1)
+    {
+        add_player(n1,score_of_pl,count_player);
+    }
+    else if(find_pl(n1,count_player))
+    {
+        update_player(n1,score_of_pl,count_player);
+    }
+    m2.close();
     }
 }
-
 void show_leader()
 {
     int count_temp=1;
@@ -564,29 +541,26 @@ void show_leader()
    {
        cout<<count_temp<<"         "<<leader[i].pl_name<<"     "<<leader[i].pl_score<<endl;
        count_temp++;
-
    }
 }
-
- int main()
- {
+int main()
+{
      srand(time(NULL));
      string name;
      int n=8;
      double c;
-
      cout<<"********************************************** WELCOME TO CODE CAB!!!!**************************************************";
      cout<<"\n\t Enter your name CABBY! :- "<<endl;
      cin>>name;
      cout<<endl;
+     getchar();
+     system("clear");
      cout<<"HEY "<<name<<" "<<"YOU CAB IS @ IN THE GAME AND PASSENGER IS #"<<endl<<endl;
      cout<<"LET ME ELABORATE YOU THE RULES OF THE GAME :-"<<endl<<endl;
      cout<<"1) YOU HAVE 3 LIVES AND THEY REDUCE WHEN YOU TRY TO COPY YOUR PREVIOUS MOVE !!! \n2) THE GAME HAS 5 STAGES ... EACH STAGE HAS DIFFERENT POINTS...AND I BET YOU'LL ENJOY TILL THE LAST"<<endl;;
      cout<<"\n3)AVOID TAKING ROUTES FULL OF OBSTACLES AND GET TO THE PASSENGER ON TIME !!!!! \n ENJOY DRIVING CABBY!!!!!!"<<endl;;
      cout<<"\n PRESS ENTER TO PLAY"<<endl;
      getchar();
-     system("clear");
-
      int sp=0;
      int player_score=0;
      mazegame a(n,name);
@@ -594,10 +568,9 @@ void show_leader()
      Graph g(n) ;
      while(counter<=5)
      {
-         int sp=0;
+        int sp=0;
         char ch;
         c = l.level(n);
-
         while(sp==0)
         {
             a.redefine(n);
@@ -606,10 +579,10 @@ void show_leader()
             g.init();
             g.checkEdge();
             sp=g.minEdgeBFS(0,(n*n)-1);
-         if(sp!=0)
-         {
-            a.drawMaze();
-         }
+             if(sp!=0)
+             {
+                a.drawMaze();
+             }
         }
         int player_score;
         int temp=a.move(0,0);
@@ -634,14 +607,11 @@ void show_leader()
         counter++;
         n++;
     }
-
     int count_player=0;
     get_player_count();
-    //player players[player_count
+    //player players[player_count];
     find_player(a.player,score,count_player);
     create_leader();
     show_leader();
     return 0;
  }
-
-
