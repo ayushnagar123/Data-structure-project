@@ -25,6 +25,17 @@ class Graph
         this->nodes=n;
         adj=new vector<int>[n*n];
     }
+    void redef_graph(int n1)
+    {
+        sp=0;
+        nodes=n1;
+            adj=new vector<int>[nodes*nodes];
+
+    }
+    void init()
+    {
+        adj=new vector<int>[nodes*nodes];
+    }
 
     void checkEdge()
     {
@@ -95,12 +106,13 @@ class mazegame
 {
 public:
    string player;
-    stack<pair<int,int> > S;
+    stack<pair<int,int>> S;
     int n , steps;
 
 
     void randomObstruction(double percent)
     {
+
         int c=(percent*n*n);
         while(c>0)
         {
@@ -118,6 +130,23 @@ public:
     {
         this->n=n;
         player = name;
+        steps=0;
+        maze = new char * [n];
+        for (int i = 0; i < n; ++i )
+            maze[i] = new char [n];
+
+        for(int i=0;i<n;i++)
+        {
+          for(int j=0;j<n;j++)
+             maze[i][j]=' ';
+        }
+
+        maze[0][0]='@';
+        maze[n-1][n-1]='#';
+    }
+    void redefine(int n1)
+    {
+        n=n1;
         steps=0;
         maze = new char * [n];
         for (int i = 0; i < n; ++i )
@@ -395,7 +424,7 @@ public:
         if(size==10)
             return(.25);
         if(size==11)
-            return(.30);
+            return(.3);
         if(size==12)
             return(.35);
     }
@@ -403,37 +432,45 @@ public:
 
  int main()
  {
-     srand(time(NULL));
      string name;
      int n=8;
      double c;
-
+     srand(time(NULL));
      cout<<"\n\t\t\t\t WELCOME \n\n\n";
      cout<<"\n\t Enter your name:- ";
      cin>>name;
 
      int counter = 1;
      int sp=0;
-
+     mazegame a(n,name);
+     Graph g(n) ;
      while(counter<=5)
      {
+         int sp=0;
         char ch;
         cout<<"\n\n\t\t LEVEL "<<counter<<"\n\n";
         c = level(n);
-        mazegame a(n,name);
 
-        do
+
+        while(sp==0)
         {
-            mazegame a(n,name);
-            a.randomObstruction(c);
-            a.drawMaze();
-            cout<<"\nTo RELOD .....'R' else do not ";
-            cin>>ch;
-        }while(ch=='R');
 
-        Graph g(n) ;
+             a.redefine(n);
+            g.redef_graph(n);
+
+            a.randomObstruction(c);
+
+          g.init();
+
         g.checkEdge();
-        sp=g.minEdgeBFS(0,n*n-1);
+        sp=g.minEdgeBFS(0,(n*n)-1);
+         if(sp!=0)
+         {
+
+            a.drawMaze();
+
+         }
+        }
         a.move(0,0);
         a.scoreBoard(sp,c);
         cout<<"\nYour total Steps were:- "<<(a.steps+1);
@@ -442,6 +479,7 @@ public:
         counter++;
         n++;
     }
+    cout<<"\nYou have won !!";
+
     return 0;
  }
-
