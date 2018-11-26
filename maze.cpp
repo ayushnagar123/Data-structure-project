@@ -95,18 +95,17 @@ class mazegame
 {
 public:
    string player;
-    stack<pair<int,int>> S;
+    stack<pair<int,int> > S;
     int n , steps;
 
 
     void randomObstruction(double percent)
     {
-        srand(time(NULL));
         int c=(percent*n*n);
         while(c>0)
         {
-            int i=rand()%8;
-            int j=rand()%8;
+            int i=rand()%n;
+            int j=rand()%n;
             if(maze[i][j]!='X' && maze[i][j]!='#' && (i!=0 || j!=0))
             {
                 maze[i][j]='X';
@@ -404,6 +403,7 @@ public:
 
  int main()
  {
+     srand(time(NULL));
      string name;
      int n=8;
      double c;
