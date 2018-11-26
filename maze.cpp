@@ -106,7 +106,7 @@ class mazegame
 {
 public:
    string player;
-    stack<pair<int,int>> S;
+    stack<pair<int,int> > S;
     int n , steps;
 
 
