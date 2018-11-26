@@ -414,7 +414,8 @@ public:
             }
     }
  };
-
+class Levels{
+public:
     double level(int size)
     {
         if(size==8)
@@ -428,7 +429,7 @@ public:
         if(size==12)
             return(.35);
     }
-
+};
 
  int main()
  {
@@ -443,13 +444,14 @@ public:
      int counter = 1;
      int sp=0;
      mazegame a(n,name);
+     Levels l;
      Graph g(n) ;
      while(counter<=5)
      {
          int sp=0;
         char ch;
         cout<<"\n\n\t\t LEVEL "<<counter<<"\n\n";
-        c = level(n);
+        c = l.level(n);
 
 
         while(sp==0)
