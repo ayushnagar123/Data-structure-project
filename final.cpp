@@ -584,6 +584,7 @@ int main()
                 a.drawMaze();
              }
         }
+        char lo;
         int player_score;
         int temp=a.move(0,0);
         if(!temp)
@@ -593,7 +594,7 @@ int main()
         cout<<"\nYour Score:"<<score;
         cout<<"\nMin steps were: "<<sp<<endl;
         cout<<"PRESS ENTER TO CONTINUE!!!!"<<endl;
-        getchar();
+        cin>>lo;
         }
         else if(temp)
         {
@@ -602,6 +603,7 @@ int main()
         counter=6;
         getchar();
         cout<<"PRESS ENTER TO CONTINUE!!!!"<<endl;
+        cin>>lo;
             break;
         }
         counter++;
