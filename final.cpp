@@ -1,4 +1,3 @@
-//comment
 #include<stack>
 #include<iostream>
 #include<cstdlib>
